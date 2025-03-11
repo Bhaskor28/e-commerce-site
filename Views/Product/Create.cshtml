@@ -1,0 +1,30 @@
+﻿@model Product;
+
+<div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</div>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        
+       
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Product Name</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Product Name" asp-for="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Price</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter Product Price" asp-for="Price">
+
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Stock Quantity</label>
+        <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter Stock quantity" asp-for="StockQuantity">
+        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+    </div>
+    
+    
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
