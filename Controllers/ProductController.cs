@@ -7,16 +7,19 @@ namespace DbHandson.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProductDbContext _context;
+        private readonly IRepository<Product> _context;
 
-        public ProductController(ProductDbContext context)
+        public ProductController(IRepository<Product> productRepository)
         {
-            _context = context;
+            this._context = productRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var products = await _context.productinfo.ToListAsync(); // Fetch all products
+            var products = await _context.GetAllAsync(); // Fetch all products
+
+
+
             return View(products);
         }
 
@@ -40,10 +43,10 @@ namespace DbHandson.Controllers
 
 
 
-                await _context.productinfo.AddAsync(product);
+                await _context.AddAsync(product);
 
 
-                await _context.SaveChangesAsync();
+                
 
 
                 return RedirectToAction("Index");
@@ -55,7 +58,7 @@ namespace DbHandson.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _context.productinfo.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _context.GetByIdAsync(id);
 
             if (product == null)
             {
@@ -73,8 +76,9 @@ namespace DbHandson.Controllers
                 return View(product);
             }
 
-            _context.Update(product);
-            await _context.SaveChangesAsync();
+           await _context.UpdateAsync(product);
+            //await _context.SaveChangesAsync();
+             
             return RedirectToAction("Index");
 
             
@@ -83,11 +87,11 @@ namespace DbHandson.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.productinfo.FindAsync(id);
+            var product = await _context.GetByIdAsync(id);
             if (product == null) return NotFound();
 
-            _context.productinfo.Remove(product);
-            await _context.SaveChangesAsync();
+            await _context.DeleteAsync(product);
+            //await _context.SaveChangesAsync();
 
             return RedirectToAction("Index"); // Redirect to product list
         }

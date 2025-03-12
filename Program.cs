@@ -1,4 +1,5 @@
 using DbHandson.Data;
+using DbHandson.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ProductDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
